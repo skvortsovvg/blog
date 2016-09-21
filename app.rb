@@ -30,7 +30,7 @@ get '/about' do
 end
 
 get '/newpost' do
-	erb "Hello. New post"
+	erb :new
 end
 
 get '/posts' do
