@@ -29,12 +29,12 @@ get '/about' do
 	erb :about
 end
 
-get '/visit' do
-	erb :visit
+get '/newpost' do
+	erb "Hello. New post"
 end
 
-get '/contacts' do
-	erb :contacts
+get '/posts' do
+	erb "Posts"
 end
 
 get '/login/form' do
