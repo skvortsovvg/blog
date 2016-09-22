@@ -1,8 +1,18 @@
-<h2>Последние записи:</h2>
+<h2>Последние TOP 5 записи:</h2>
 <br>
 <% @results.each do |post| %>
 	
-	<%= post['content'] %>
-	<br>
-
+	<blockquote>
+  		<p><%= post['content'] %></p>
+  		<footer>
+  			<dl class="dl-horizontal"> 
+	  			<dt style="width: 300px"> 
+	  				Added at <%= post['create_date'] %> by 
+	  				<cite>username</cite>
+	  			</dt>
+	  			<dd><a style="margin: 20px" href="/post/<%=post['id']%>">Comments</a></dd>
+  			</dl>	
+  		</footer>
+  	</blockquote>
+	
 <% end %>
