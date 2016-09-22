@@ -3,10 +3,10 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'sqlite3'
 
-@db = SQLite3::Database.new 'blog.db'
+$db = SQLite3::Database.new 'blog.db'
 
 configure do
-  @db.execute("CREATE TABLE IF NOT EXISTS posts
+  $db.execute("CREATE TABLE IF NOT EXISTS posts
             (
                'id' INTEGER PRIMARY KEY AUTOINCREMENT, 
                'user_id' INTEGER, 
@@ -32,7 +32,13 @@ get '/newpost' do
 end
 
 post '/newpost' do
-  erb params[:posttext]
+  if params[:posttext].empty? then
+    @error = "Введите текст записи!"
+    erb :new
+  else
+    $db.execute('insert into posts (create_date, content) values (datetime(),?)', [params[:posttext]])
+    erb '/'
+  end
 end
 
 get '/posts' do
