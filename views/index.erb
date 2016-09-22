@@ -2,13 +2,14 @@
 <br>
 <% @results.each do |post| %>
 	
+
 	<blockquote>
   		<p><%= post['content'] %></p>
   		<footer>
   			<dl class="dl-horizontal"> 
 	  			<dt style="width: 300px"> 
 	  				Added at <%= post['create_date'] %> by 
-	  				<cite>username</cite>
+	  				<cite><%= post['username'] ? post['username'] : 'guest' %></cite>
 	  			</dt>
 	  			<dd><a style="margin: 20px" href="/posts/<%=post['id']%>">Comments</a></dd>
   			</dl>	

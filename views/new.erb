@@ -1,7 +1,13 @@
 <h2>Новая запись</h2>
 <br>
 <form action="/newpost" method="POST">
-  <textarea class="form-control" name="posttext" style="width: 400px" rows="6" placeholder="Enter your text here"></textarea>
+  <div>
+  	<label for="author_name">Имя автора:</label>
+  	<input name="author_name" class="form-control" placeholder="Enter your name">
+  </div>
+  <br>
+  <label for="posttext">Текст записи:</label>    
+  <textarea class="form-control" name="posttext" rows="6" placeholder="Enter your text here"><%=params[:posttext] if params[:posttext]%></textarea>
   <br>
   <button type="submit" class="btn btn-info">Submit</button>
 </form>

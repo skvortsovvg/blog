@@ -11,6 +11,7 @@ configure do
             (
                'id' INTEGER PRIMARY KEY AUTOINCREMENT, 
                'user_id' INTEGER, 
+               'username' TEXT,
                'create_date' DATE, 
                'content' TEXT
             )")
@@ -47,9 +48,12 @@ end
 post '/newpost' do
   if params[:posttext].empty? then
     @error = "Введите текст записи!"
-    erb :new
+    return erb :new
+  elsif params[:author_name].empty? then
+    @error = "Введите ваше имя!"
+    return erb :new
   else
-    $db.execute('insert into posts (create_date, content) values (datetime(),?)', [params[:posttext]])
+    $db.execute('insert into posts (username, create_date, content) values (?, datetime(), ?)', [params[:author_name], params[:posttext]])
     redirect to '/'
   end
 end
@@ -64,7 +68,8 @@ end
 
 post '/posts/:post_id' do
   if params[:commenttext].empty? then
-    @error = "Введите текст записи!"
+    @error = "Введите текст комментария!"
+    return erb :details
   else
     $db.execute('insert into comments (create_date, post_id, comment) values (datetime(),?,?)', [params[:post_id], params[:commenttext]])
   end
