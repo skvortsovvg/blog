@@ -45,3 +45,8 @@ end
 get '/posts' do
 	erb "Posts"
 end
+
+get '/posts/:post_id' do
+  @results = $db.execute('select * from posts where id = ?', params[:post_id])
+  erb :details
+end
