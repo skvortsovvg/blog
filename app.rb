@@ -27,6 +27,11 @@ before '/' do
   @results = $db.execute('select * from posts order by id desc limit 5;')
 end
 
+before '/posts/:post_id' do
+  @mainpost = $db.execute('select * from posts where id = ?', params[:post_id])[0]
+  @comments = $db.execute('select * from comments  where post_id = ?', [params[:post_id]])
+end
+
 get '/' do
   erb :index     
 end
@@ -54,16 +59,14 @@ get '/posts' do
 end
 
 get '/posts/:post_id' do
-  @results = $db.execute('select * from posts where id = ?', params[:post_id])
   erb :details
 end
 
 post '/posts/:post_id' do
   if params[:commenttext].empty? then
     @error = "Введите текст записи!"
-    erb :details
   else
-    $db.execute('insert into posts (create_date, post_id, comment) values (datetime(),?,?)', [params[:post_id], params[:commenttext]])
-    redirect to "/possts/#{params[:post_id]}"
+    $db.execute('insert into comments (create_date, post_id, comment) values (datetime(),?,?)', [params[:post_id], params[:commenttext]])
   end
+    redirect to "/posts/#{params[:post_id]}"
 end

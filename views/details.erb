@@ -1,25 +1,30 @@
 <h2>Подробности о записи:</h2>
 <br>
-<% @results.each do |post| %>
-	
-	<blockquote>
-  		<p><%= post['content'] %></p>
-  		<footer>
-  			<dl class="dl-horizontal"> 
-	  			<dt style="width: 300px"> 
-	  				Added at <%= post['create_date'] %> by 
-	  				<cite>username</cite>
-	  			</dt>
-	  			<dd><a style="margin: 20px" href="/posts/<%=post['id']%>">Comments</a></dd>
-  			</dl>	
-  		</footer>
-  	</blockquote>
-  	<br>
-	<h4>Comment:</h4>
-	<form action="/posts/<%=post['id']%>" method="POST">
-  	  <textarea id="comment"  class="form-control" name="commenttext" style="width: 400px" rows="6" placeholder="Enter your comment here"></textarea>
-	  <br>
-	  <button type="submit" class="btn btn-info">Add comment</button>
-	</form>
-	
-<% end %>
+<blockquote>
+		<p><%= @mainpost['content'] %></p>
+		<footer>
+			<dl class="dl-horizontal"> 
+  			<dt style="width: 300px"> 
+  				Added at <%= @mainpost['create_date'] %> by 
+  				<cite>username</cite>
+  			</dt>
+  			<dd><a style="margin: 20px" href="/posts/<%=@mainpost['id']%>">Comments</a></dd>
+		</dl>	
+	</footer>
+</blockquote>
+
+<h4>Comments:</h4>
+<div style="margin-left: 50px">
+	<% @comments.each do |comment| %>
+			<p><%= comment['comment'] %></p>
+			<p style="font-size: 75%; color: #999 "><%= comment['create_date'] %></p>
+			<br>
+	<% end %>
+	</div>
+
+<h4>Add comment:</h4>
+<form action="/posts/<%=@mainpost['id']%>" method="POST">
+  <textarea id="comment"  class="form-control" name="commenttext" style="width: 400px" rows="6" placeholder="Enter your comment here"></textarea>
+  <br>
+  <button type="submit" class="btn btn-info">Add comment</button>
+</form>
