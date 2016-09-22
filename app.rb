@@ -14,6 +14,13 @@ configure do
                'create_date' DATE, 
                'content' TEXT
             )")
+  $db.execute("CREATE TABLE IF NOT EXISTS comments
+            (
+               'id' INTEGER PRIMARY KEY AUTOINCREMENT, 
+               'post_id' INTEGER, 
+               'create_date' DATE, 
+               'comment' TEXT
+            )")
 end
 
 before '/' do
@@ -49,4 +56,14 @@ end
 get '/posts/:post_id' do
   @results = $db.execute('select * from posts where id = ?', params[:post_id])
   erb :details
+end
+
+post '/posts/:post_id' do
+  if params[:commenttext].empty? then
+    @error = "Введите текст записи!"
+    erb :details
+  else
+    $db.execute('insert into posts (create_date, post_id, comment) values (datetime(),?,?)', [params[:post_id], params[:commenttext]])
+    redirect to "/possts/#{params[:post_id]}"
+  end
 end
