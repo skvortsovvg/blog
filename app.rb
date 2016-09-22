@@ -4,6 +4,7 @@ require 'sinatra/reloader'
 require 'sqlite3'
 
 $db = SQLite3::Database.new 'blog.db'
+$db.results_as_hash = true
 
 configure do
   $db.execute("CREATE TABLE IF NOT EXISTS posts
@@ -15,12 +16,12 @@ configure do
             )")
 end
 
-before '/visit' do
-
+before '/' do
+  @results = $db.execute('select * from posts order by id desc limit 5;')
 end
 
 get '/' do
-  erb "Ссылка на базу: #{@db}"#{}"Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"     
+  erb :index     
 end
 
 get '/about' do
@@ -37,7 +38,7 @@ post '/newpost' do
     erb :new
   else
     $db.execute('insert into posts (create_date, content) values (datetime(),?)', [params[:posttext]])
-    erb '/'
+    redirect to '/'
   end
 end
 
